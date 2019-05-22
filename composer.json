@@ -1,0 +1,36 @@
+{
+  "name": "indigerd/http-fault-tolerance",
+  "description": "SDK for Bookimed service-events",
+  "keywords": ["sdk"],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alexander Stepanenko",
+      "email": "alex.stepanenko@gmail.com"
+    }
+  ],
+  "repositories":[
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ],
+  "require": {
+    "php": ">=7.2.0",
+    "guzzlehttp/guzzle": "~6.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "@stable"
+  },
+  "autoload": {
+    "psr-4": {
+      "Indigerd\\Tolerance\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "indigerd\\tolerance\\test\\": "tests"
+    }
+  }
+}
