@@ -21,15 +21,15 @@ class Complex implements FallbackInterface
 
     public function request(callable $requestAction)
     {
-        $fallbackResult = null;
+        $lastException = new \RuntimeException('Request failed');
         foreach ($this->strategies as $strategy) {
             try {
                 $result = $strategy->request($requestAction);
                 return $result;
             } catch (\Throwable $e) {
-                $fallbackResult = $e->getMessage();
+                $lastException = $e;
             }
         }
-        throw new \RuntimeException($fallbackResult);
+        throw $lastException;
     }
 }

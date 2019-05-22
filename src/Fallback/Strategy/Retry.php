@@ -19,17 +19,19 @@ class Retry implements FallbackInterface
     public function request(callable $requestAction)
     {
         $i = 0;
+        $lastException = new \RuntimeException('Request failed');
         while ($i <= $this->attempts) {
             try {
                 $result = $requestAction();
                 return $result;
             } catch (\Throwable $e) {
+                $lastException = $e;
                 $i++;
                 if (isset($this->delays[$i])) {
                     usleep($this->delays[$i]);
                 }
             }
         }
-        throw new \RuntimeException("Request failed");
+        throw $lastException;
     }
 }
