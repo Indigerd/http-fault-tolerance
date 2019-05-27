@@ -42,12 +42,12 @@ class Client
             $fallbackStrategy = $this->fallbackFactory->create($fallbackStrategy);
         }
         if (!($fallbackStrategy instanceof FallbackInterface)) {
-            throw new \InvalidArgumentException('Invalid falback strategy');
+            throw new \InvalidArgumentException('Invalid fallback strategy');
         }
         return $fallbackStrategy;
     }
 
-    public function request($method, $uri = '', array $options = [], $fallbackStrategy = null)
+    public function request(string $method, string $uri = '', array $options = [], $fallbackStrategy = null) : Response
     {
         $requestAction = function () use ($method, $uri, $options) {
             return $this->client->request($method, $uri, $options);

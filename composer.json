@@ -30,7 +30,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "indigerd\\tolerance\\test\\": "tests"
+      "Indigerd\\Tolerance\\Test\\": "tests"
     }
   }
 }

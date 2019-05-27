@@ -16,7 +16,7 @@ class FallbackFactory
         'ignore' => Ignore::class
     ];
 
-    public function create(string $strategy, array $config = [])
+    public function create(string $strategy, array $config = []) : FallbackInterface
     {
         if (!isset($this->strategies[$strategy])) {
             throw new \InvalidArgumentException("Invalid fallback strategy: $strategy");

@@ -37,3 +37,14 @@ $response = $client->request('GET', 'http://google344534534534534534111111.com',
 echo($response->getBody());
 
 ```
+
+
+Example of using library client instead of Guzzle by creating Guzzle decarator. As decorator extends Guzzle Http client you can just inject it in your code with dependency injection without changing your business logic.
+
+```php
+
+use Indigerd\Tolerance\Decorator\Client;
+
+$client = new Client();
+
+```
