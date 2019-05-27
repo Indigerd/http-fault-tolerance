@@ -5,6 +5,7 @@ namespace Indigerd\Tolerance\Decorator;
 use GuzzleHttp\Client as HttpClient;
 use Indigerd\Tolerance\Client as Tolerance;
 use Indigerd\Tolerance\Fallback\FallbackFactory;
+use Indigerd\Tolerance\ResponseFactory;
 
 class Client extends HttpClient
 {
@@ -19,6 +20,7 @@ class Client extends HttpClient
         $this->tolerance = new Tolerance(
             $this,
             new FallbackFactory,
+            new ResponseFactory,
             $defaultFallback,
             $fallbackConfig
         );
@@ -26,6 +28,7 @@ class Client extends HttpClient
 
     public function request($method, $uri = '', array $options = [])
     {
-        return $this->tolerance->request($method, $uri, $options);
+        $result = $this->tolerance->request($method, $uri, $options);
+
     }
 }

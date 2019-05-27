@@ -3,6 +3,7 @@
 namespace Indigerd\Tolerance;
 
 use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Psr7\Response;
 use Indigerd\Tolerance\Fallback\FallbackFactory;
 use Indigerd\Tolerance\Fallback\FallbackInterface;
 
@@ -12,6 +13,8 @@ class Client
 
     protected $fallbackFactory;
 
+    protected $responseFactory;
+
     protected $defaultFallback;
 
     protected $fallbackConfig = [];
@@ -19,11 +22,13 @@ class Client
     public function __construct(
         HttpClient $client,
         FallbackFactory $fallbackFactory,
+        ResponseFactory $responseFactory,
         $defaultFallback = 'retry',
         array $fallbackConfig = []
     ) {
         $this->client = $client;
         $this->fallbackFactory = $fallbackFactory;
+        $this->responseFactory = $responseFactory;
         $this->fallbackConfig = $fallbackConfig;
         $this->defaultFallback = $this->createFallback($defaultFallback);
     }
@@ -58,6 +63,10 @@ class Client
                 $fallbackStrategy = $this->defaultFallback;
             }
         }
-        return $fallbackStrategy->request($requestAction);
+        $result = $fallbackStrategy->request($requestAction);
+        if (!($result instanceof Response)) {
+            $result = $this->responseFactory->create(200, [], $result);
+        }
+        return $result;
     }
 }

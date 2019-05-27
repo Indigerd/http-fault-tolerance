@@ -1,7 +1,7 @@
 {
   "name": "indigerd/http-fault-tolerance",
-  "description": "SDK for Bookimed service-events",
-  "keywords": ["sdk"],
+  "description": "Handle http requests with custom fallback strategies",
+  "keywords": ["library", "http", "fault tolerance"],
   "type": "library",
   "license": "MIT",
   "authors": [
