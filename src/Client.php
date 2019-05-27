@@ -25,17 +25,11 @@ class Client
         $this->client = $client;
         $this->fallbackFactory = $fallbackFactory;
         $this->fallbackConfig = $fallbackConfig;
-        if (!($defaultFallback instanceof FallbackInterface)) {
-            $defaultFallback = $this->fallbackFactory->create($defaultFallback);
-        }
-        $this->defaultFallback = $defaultFallback;
+        $this->defaultFallback = $this->createFallback($defaultFallback);
     }
 
-    public function request($method, $uri = '', array $options = [], $fallbackStrategy = null)
+    protected function createFallback($fallbackStrategy) : FallbackInterface
     {
-        $requestAction = function () use ($method, $uri, $options) {
-            $this->client->request($method, $uri, $options);
-        };
         if (is_array($fallbackStrategy)) {
             $fallbackStrategy = $this->fallbackFactory->create(...$fallbackStrategy);
         }
@@ -43,7 +37,26 @@ class Client
             $fallbackStrategy = $this->fallbackFactory->create($fallbackStrategy);
         }
         if (!($fallbackStrategy instanceof FallbackInterface)) {
-            $fallbackStrategy = $this->defaultFallback;
+            throw new \InvalidArgumentException('Invalid falback strategy');
+        }
+        return $fallbackStrategy;
+    }
+
+    public function request($method, $uri = '', array $options = [], $fallbackStrategy = null)
+    {
+        $requestAction = function () use ($method, $uri, $options) {
+            return $this->client->request($method, $uri, $options);
+        };
+        try {
+            $fallbackStrategy = $this->createFallback($fallbackStrategy);
+        } catch (\InvalidArgumentException $e) {
+            if (isset($this->fallbackConfig[strtolower($method)][$uri])) {
+                $fallbackStrategy = $this->createFallback($this->fallbackConfig[strtolower($method)][$uri]);
+            }
+        } finally {
+            if (!($fallbackStrategy instanceof FallbackInterface)) {
+                $fallbackStrategy = $this->defaultFallback;
+            }
         }
         return $fallbackStrategy->request($requestAction);
     }
