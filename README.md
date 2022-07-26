@@ -43,7 +43,7 @@ Example of using library client instead of Guzzle by creating Guzzle decarator. 
 
 ```php
 
-use Indigerd\Tolerance\Decorator\Client;
+use Indigerd\Tolerance\Decorator\GuzzleHttp\Client;
 
 $client = new Client();
 

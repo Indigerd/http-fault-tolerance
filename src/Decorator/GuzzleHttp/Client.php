@@ -1,6 +1,6 @@
 <?php
 
-namespace Indigerd\Tolerance\Decorator;
+namespace Indigerd\Tolerance\Decorator\GuzzleHttp;
 
 use GuzzleHttp\Client as HttpClient;
 use Indigerd\Tolerance\Client as Tolerance;
