@@ -18,7 +18,7 @@ class Client extends HttpClient
     ) {
         parent::__construct($config);
         $this->tolerance = new Tolerance(
-            $this,
+            new HttpClient($config),
             new FallbackFactory,
             new ResponseFactory,
             $defaultFallback,
@@ -28,7 +28,6 @@ class Client extends HttpClient
 
     public function request($method, $uri = '', array $options = [])
     {
-        $result = $this->tolerance->request($method, $uri, $options);
-
+        return $this->tolerance->request($method, $uri, $options);
     }
 }
